@@ -1,0 +1,10 @@
+(name [replaceAll(regex) { … }])
+
+(trigger
+    (tab replace))
+
+(only-in source.groovy)
+
+(snippet [replaceAll(/%{1="regex"}/) {%{2/(.+)/(?1: )/}%{2="match"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

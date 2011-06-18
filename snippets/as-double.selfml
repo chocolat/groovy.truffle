@@ -1,0 +1,8 @@
+(name [as Double])
+
+(trigger
+    (tab as))
+
+(only-in source.groovy)
+
+(snippet [as Double])

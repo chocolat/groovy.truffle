@@ -1,0 +1,15 @@
+(trigger
+    (key [[shift][cmd]R]))
+
+(name [Run (with args)])
+
+(only-in source.groovy)
+
+(input document word)
+
+(output html)
+
+(save nothing)
+
+(script [export TM_GROOVYMATE_GET_ARGS=
+groovymate.sh])

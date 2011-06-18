@@ -1,0 +1,10 @@
+(name [#!/usr/bin/env groovy -w])
+
+(trigger
+    (tab [#!]))
+
+(only-in source.groovy)
+
+(snippet [#!/usr/bin/env groovy -w
+
+])

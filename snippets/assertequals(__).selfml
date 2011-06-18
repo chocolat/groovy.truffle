@@ -1,0 +1,8 @@
+(name assertEquals)
+
+(trigger
+    (tab ase))
+
+(only-in source.groovy)
+
+(snippet [assertEquals(%{1/(.+)/(?1:")/}%{1="message"}%{1/(.+)/(?1:", )/}%{2="expected"}, %{3="actual"})%{0}])

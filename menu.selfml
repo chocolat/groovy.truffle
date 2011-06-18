@@ -1,0 +1,48 @@
+(menu command.run
+    [command.run-(with-args)]
+    command.run-selected-snippet
+    ---
+    command.groovy-console
+    ---
+    [command.documentation-for-word-(java)]
+    [command.documentation-for-word-(groovy)-copy]
+    command.groovy-jdk
+    ---
+    (submenu Declarations
+        [snippet.#!-usr-local-bin-groovy--w]
+        ---
+        snippet.import
+        snippet.package
+        ---
+        snippet.class-__
+        snippet.constructor
+        snippet.class-__-singleton
+        ---
+        [snippet.assert(__)]
+        (submenu Variables snippet.var --- [snippet.def-__-closure-=-{__}])
+        (submenu Methods snippet.static-main-method)
+        (submenu Testing
+            snippet.class-___-testcase
+            ---
+            snippet.test-case
+            ---
+            [snippet.setup()]
+            [snippet.teardown()]
+            ---
+            (submenu Assertions snippet.asserttrue snippet.assertfalse snippet.assertsame [snippet.assertnull(__)] [snippet.assertnotnull(__)] [snippet.assertequals(__)] [snippet.assertnotequals(__)] [snippet.shouldfail(__)-{-__-}])))
+    (submenu Documentation snippet.block-comment snippet.continue-block-comment)
+    (submenu Flow snippet.case snippet.switch__case snippet.switch__case__default)
+    (submenu Iteration
+        snippet.for-in
+        (submenu Numbers [snippet.upto(num)-{-n-->-__-}] [snippet.downto(num)-{-n-->-__-}] [snippet.step(to,amount)-{-n-->-__-}])
+        (submenu [Files & Streams] [snippet.eachbyte-{-byte-->-__-}] [snippet.eachline-{-line-->-__-}] [snippet.eachfile-{-file-->-__-}] [snippet.eachfilematch-{-file-->-__-}] [snippet.eachfilerecurse-{-file-->-__-}] [snippet.new-file(__)_eachline-{-__-}] [snippet.eachdir-{-dir-->-__-}] snippet.eachdirmatch snippet.eachdirrecurse [snippet.spliteachline(separator)-{-line-->-__-}-copy])
+        (submenu Strings [snippet.grep(-pattern-)-{-match-->-__-}] [snippet.eachmatch(regex)-{-match-->-__-}])
+        (submenu Collections [snippet.all{-e-->-__-}] [snippet.any{-e-->-__-}] [snippet.collect-{-e-->-__-}] [snippet.each-{-e-->-__-}] [snippet.reverseeach-{-e-->-__-}] [snippet.every-{-e-->-__-}] [snippet.eachwithindex-{-e,-i-->-__-}] [snippet.eachobject-{-obj-->-__-}])
+        (submenu Maps [snippet.eachkey-{-key-->-__-}] [snippet.eachvalue-{-val-->-__-}]))
+    (submenu Search/Sort/Replace [snippet.find-{-e-->-__-}] [snippet.findall-{-e-->-__-}] [snippet.sort-{-__-}] [snippet.replaceall(regex)-{-match-->-__}])
+    (submenu Input/Output snippet.print snippet.println --- [snippet.withwriter-{-w-->-__}] [snippet.withprintwriter-{-pw-->-__}] [snippet.withreader-{-r-->-__-}] [snippet.withoutputstream-{-out-->-__-}] [snippet.withinputstream-{-in-->-__-}] [snippet.withwriter(charset)-{-w-->-__-}] [snippet.withwriterappend(charset)-{-__-}] [snippet.withstream-{-in-->-__-}] [snippet.withstreams-{-socket-s-->-__}])
+    (submenu [Type Conversion]
+        (submenu As snippet.as-string snippet.as-set snippet.as-double snippet.as-float snippet.as-bigdecimal snippet.as-biginteger snippet.as-writable --- snippet.as-immutable snippet.as-synchronized)
+        (submenu To snippet.to-url snippet.to-uri snippet.to-string snippet.to-integer snippet.to-list snippet.to-boolean snippet.to-character snippet.to-array snippet.to-double snippet.to-float snippet.to-biginteger snippet.to-bigdecimal))
+    (submenu Threads [snippet.thread_start-{-__-}] [snippet.thread_startdaemon-{-__-}] [snippet.sleep(secs)] [snippet.sleep(secs)-{-__-on-interrupt-}] snippet.run-after)
+    (submenu [Ant Scripting] snippet.mkdir snippet.copy__-file snippet.copy__-fileset snippet.copy__-fileset-include-exclude snippet.ant-__-replace))

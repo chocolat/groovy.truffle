@@ -1,0 +1,10 @@
+(name [eachMatch(regex) { … } ])
+
+(trigger
+    (tab eam))
+
+(only-in source.groovy)
+
+(snippet [eachMatch(/%{1="regex"}/) {%{2/(.+)/(?1: )/}%{2="match"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

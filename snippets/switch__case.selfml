@@ -1,0 +1,12 @@
+(name [switch … case])
+
+(trigger
+    (tab switch))
+
+(only-in source.groovy)
+
+(snippet [switch(%{1="value"}) {
+	case %{2="CASE"}:
+		%{3}
+	break%{0}
+}])

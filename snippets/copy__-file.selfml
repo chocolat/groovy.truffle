@@ -1,0 +1,8 @@
+(name [copy(file: …, tofile: …) ])
+
+(trigger
+    (tab copy))
+
+(only-in source.groovy)
+
+(snippet [copy(file:"%{1="sourceFile"}", tofile:"%{2="targetFile"}")])

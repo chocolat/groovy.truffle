@@ -1,0 +1,10 @@
+(name [tearDown() { … }])
+
+(trigger
+    (tab tear))
+
+(only-in source.groovy)
+
+(snippet [void tearDown() {
+	%{0}
+}])

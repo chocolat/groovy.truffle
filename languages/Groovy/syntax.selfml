@@ -1,0 +1,758 @@
+(root source.groovy
+    (zone comment.line.hashbang.groovy
+        (match
+            (regex [^(#!).+$\n]
+                (1 punctuation.definition.comment.groovy))))
+    (zone meta.package.groovy
+        (match
+            (regex [^\s*(package)\b(?:\s*([^ ;$]+)\s*(;)?)?]
+                (3 punctuation.terminator.groovy)
+                (1 keyword.other.package.groovy)
+                (2 storage.modifier.package.groovy))))
+    (zone meta.import.static.groovy
+        (match
+            (regex [^\s*(import)(?:\s+(static)\s+)\b(?:\s*([^ ;$]+)\s*(;)?)?]
+                (3 storage.modifier.import.groovy)
+                (4 punctuation.terminator.groovy)
+                (1 keyword.other.import.groovy)
+                (2 keyword.other.import.static.groovy))))
+    (zone meta.import.groovy
+        (match
+            (regex [^\s*(import)\b(?:\s*([^ ;$]+)\s*(;)?)?]
+                (3 punctuation.terminator.groovy)
+                (1 keyword.other.import.groovy)
+                (2 storage.modifier.import.groovy))))
+    (zone meta.import.groovy
+        (match
+            (regex [^\s*(import)(?:\s+(static)\s+)\b(?:\s*([^ ;$]+)\s*(;)?)?]
+                (3 storage.modifier.import.groovy)
+                (4 punctuation.terminator.groovy)
+                (1 keyword.other.import.groovy)
+                (2 keyword.other.import.static.groovy))))
+    (include @groovy))
+
+(collection groovy-code
+    (include @groovy-code-minus-map-keys)
+    (include @map-keys))
+
+(collection string-quoted-single-multiline
+    (zone string.quoted.single.multiline.groovy
+        (start
+            (regex '''
+                (0 punctuation.definition.string.begin.groovy)))
+        (end
+            (regex '''
+                (0 punctuation.definition.string.end.groovy)))
+        (subzones
+            (include @string-quoted-single-contents))))
+
+(collection class
+    (zone meta.definition.class.groovy
+        (start
+            (regex [(?=\w?[\w\s]*(?:class|(?:@)?interface|enum)\s+\w+)]))
+        (end
+            (regex [}]
+                (0 punctuation.section.class.end.groovy)))
+        (subzones
+            (include @storage-modifiers)
+            (include @comments)
+            (zone meta.class.identifier.groovy
+                (match
+                    (regex [(class|(?:@)?interface|enum)\s+(\w+)]
+                        (1 storage.modifier.groovy)
+                        (2 entity.name.type.class.groovy))))
+            (zone meta.definition.class.inherited.classes.groovy
+                (start
+                    (regex extends
+                        (0 storage.modifier.extends.groovy)))
+                (end
+                    (regex [(?={|implements)]))
+                (subzones
+                    (include @object-types-inherited)
+                    (include @comments)))
+            (zone meta.definition.class.implemented.interfaces.groovy
+                (start
+                    (regex [(implements)\s]
+                        (1 storage.modifier.implements.groovy)))
+                (end
+                    (regex [(?=\s*extends|\{)]))
+                (subzones
+                    (include @object-types-inherited)
+                    (include @comments)))
+            (zone meta.class.body.groovy
+                (start [{])
+                (end
+                    (regex [(?=})]))
+                (subzones
+                    (include @enum-values)
+                    (include @constructors)
+                    (include @groovy))))))
+
+(collection groovy
+    (include @comments)
+    (include @annotations)
+    (include @class)
+    (include @variables)
+    (include @methods)
+    (include @groovy-code))
+
+(collection values
+    (include @language-variables)
+    (include @strings)
+    (include @numbers)
+    (include @constants)
+    (include @types)
+    (include @structures)
+    (include @method-call))
+
+(collection nest_curly
+    (zone
+        (start
+            (regex [\{]
+                (0 punctuation.section.scope.groovy)))
+        (end
+            (regex [\}]
+                (0 punctuation.section.scope.groovy)))
+        (subzones
+            (include @nest_curly))))
+
+(collection string-quoted-single-contents
+    (zone constant.character.escape.groovy
+        (match
+            (regex \\.))))
+
+(collection support-functions
+    (zone support.function.print.groovy
+        (match
+            (regex [(?x)\b(?:sprintf|print(?:f|ln)?)\b])))
+    (zone support.function.testing.groovy
+        (match
+            (regex [(?x)\b(?:shouldFail|fail(?:NotEquals)?|ass(?:ume|ert(?:S(?:cript|ame)|N(?:ot(?:Same|
+					Null)|ull)|Contains|T(?:hat|oString|rue)|Inspect|Equals|False|Length|
+					ArrayEquals)))\b]))))
+
+(collection comments
+    (zone comment.block.empty.groovy
+        (match
+            (regex /\*\*/
+                (0 punctuation.definition.comment.groovy))))
+    (include text.html.javadoc)
+    (include @comment-block)
+    (zone comment.line.double-slash.groovy
+        (match
+            (regex [(//).*$\n?]
+                (1 punctuation.definition.comment.groovy)))))
+
+(collection parameters
+    (include @annotations)
+    (include @storage-modifiers)
+    (include @types)
+    (zone variable.parameter.method.groovy
+        (match
+            (regex \w+))))
+
+(collection parens
+    (zone
+        (start
+            (regex [\(]))
+        (end
+            (regex [\)]))
+        (subzones
+            (include @groovy-code))))
+
+(collection object-types
+    (zone storage.type.generic.groovy
+        (start
+            (regex [\b((?:[a-z]\w*\.)*[A-Z]+\w*[a-z]+\w*)<]))
+        (end
+            (regex [>|[^\w\s,\?<\[\]]]))
+        (subzones
+            (include @object-types)
+            (zone storage.type.generic.groovy
+                (start <)
+                (end
+                    (regex [>|[^\w\s,\[\]<]])))))
+    (zone storage.type.object.array.groovy
+        (start
+            (regex `\b((?:[a-z]\w*\.)*[A-Z]+\w*[a-z]+\w*)(?=\[)`))
+        (end
+            (regex `(?=[^\]\s])`))
+        (subzones
+            (zone
+                (start
+                    (regex `\[`))
+                (end
+                    (regex `\]`))
+                (subzones
+                    (include @groovy)))))
+    (zone storage.type.groovy
+        (match
+            (regex [\b(?:[a-z]\w*\.)*[A-Z]+\w*[a-z]+\w*\b]))))
+
+(collection storage-modifiers
+    (zone storage.modifier.access-control.groovy
+        (match
+            (list private protected public)
+            (boundary.both)))
+    (zone storage.modifier.static.groovy
+        (match
+            (list static)
+            (boundary.both)))
+    (zone storage.modifier.final.groovy
+        (match
+            (list final)
+            (boundary.both)))
+    (zone storage.modifier.other.groovy
+        (match
+            (list native synchronized abstract threadsafe transient)
+            (boundary.both))))
+
+(collection numbers
+    (zone constant.numeric.groovy
+        (match
+            (regex [((0(x|X)[0-9a-fA-F]*)|(\+|-)?\b(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)([LlFfUuDdg]|UL|ul)?\b]))))
+
+(collection string-quoted-double-multiline
+    (zone string.quoted.double.multiline.groovy
+        (start
+            (regex """
+                (0 punctuation.definition.string.begin.groovy)))
+        (end
+            (regex """
+                (0 punctuation.definition.string.end.groovy)))
+        (subzones
+            (include @string-quoted-double-contents))))
+
+(collection string-quoted-double-contents
+    (zone constant.character.escape.groovy
+        (match
+            (regex \\.)))
+    (zone variable.other.interpolated.groovy
+        (start
+            (regex \$\w))
+        (end
+            (regex [(?=\W)]))
+        (subzones
+            (zone variable.other.interpolated.groovy
+                (match
+                    (regex \w)))
+            (zone keyword.other.dereference.groovy
+                (match
+                    (regex \.)))))
+    (zone source.groovy.embedded.source
+        (start
+            (regex [\$\{]
+                (0 punctuation.section.embedded.groovy)))
+        (end
+            (regex [\}]
+                (0 punctuation.section.embedded.groovy)))
+        (subzones
+            (include @nest_curly))))
+
+(collection keyword-language
+    (zone keyword.control.exception.groovy
+        (match
+            (list try catch finally throw)
+            (boundary.both)))
+    (zone keyword.control.groovy
+        (match
+            (regex [\b((?<!\.)(?:return|break|continue|default|do|while|for|switch|if|else))\b])))
+    (zone meta.case.groovy
+        (start
+            (regex \bcase\b
+                (0 keyword.control.groovy)))
+        (end
+            (regex :
+                (0 punctuation.definition.case-terminator.groovy)))
+        (subzones
+            (include @groovy-code-minus-map-keys)))
+    (zone keyword.other.new.groovy
+        (match
+            (list new)
+            (boundary.both)))
+    (zone meta.declaration.assertion.groovy
+        (start
+            (regex [\b(assert)\s]
+                (1 keyword.control.assert.groovy)))
+        (end
+            (regex $))
+        (subzones
+            (zone keyword.operator.assert.expression-seperator.groovy
+                (match :))
+            (include @groovy-code-minus-map-keys)))
+    (zone keyword.other.throws.groovy
+        (match
+            (list throws)
+            (boundary.both))))
+
+(collection groovy-code-minus-map-keys
+    (zone
+        (subzones
+            (include @comments)
+            (include @annotations)
+            (include @support-functions)
+            (include @keyword-language)
+            (include @values)
+            (include @keyword-operator)
+            (include @types)
+            (include @storage-modifiers)
+            (include @parens)
+            (include @closures)
+            (include @braces))))
+
+(collection primitive-types
+    (zone storage.type.primitive.groovy
+        (match
+            (regex [\b(?:void|boolean|byte|char|short|int|float|long|double)\b]))))
+
+(collection method-content
+    (zone
+        (match
+            (regex \s)))
+    (include @storage-modifiers)
+    (zone meta.definition.method.signature.java
+        (start
+            (regex [(\w+)\s*\(]
+                (1 entity.name.function.java)))
+        (end
+            (regex [\)]))
+        (subzones
+            (zone meta.method.parameters.groovy
+                (start
+                    (regex [(?=[^)])]))
+                (end
+                    (regex [(?=\))]))
+                (subzones
+                    (zone meta.method.parameter.groovy
+                        (start
+                            (regex [(?=[^,)])]))
+                        (end
+                            (regex [(?=,|\))]))
+                        (subzones
+                            (zone punctuation.definition.separator.groovy
+                                (match ,))
+                            (zone meta.parameter.default.groovy
+                                (start
+                                    (regex =
+                                        (0 keyword.operator.assignment.groovy)))
+                                (end
+                                    (regex [(?=,|\))]))
+                                (subzones
+                                    (include @groovy-code)))
+                            (include @parameters)))))))
+    (zone meta.method.paramerised-type.groovy
+        (start
+            (regex [(?=<)]))
+        (end
+            (regex [(?=\s)]))
+        (subzones
+            (zone storage.type.parameters.groovy
+                (start <)
+                (end >)
+                (subzones
+                    (include @types)
+                    (zone punctuation.definition.seperator.groovy
+                        (match ,))))))
+    (zone meta.method.return-type.java
+        (start
+            (regex [(?=(?:\w|<).*\s+(?:\w|<)+\s*\()]))
+        (end
+            (regex [(?=\w+\s*\()]))
+        (subzones
+            (include @types)))
+    (zone meta.throwables.groovy
+        (start
+            (regex throws
+                (0 storage.modifier.groovy)))
+        (end
+            (regex [(?={|;)|^(?=\s*(?:[^{\s]|$))]))
+        (subzones
+            (include @object-types)))
+    (zone meta.method.body.java
+        (start [{])
+        (end
+            (regex [(?=})]))
+        (subzones
+            (include @groovy-code))))
+
+(collection methods
+    (zone meta.definition.method.groovy
+        (start
+            (regex [(?x:(?<=;|^)(?=\s*
+                (?:
+                    (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier
+                        |
+                    (?:def)
+                        |
+                    (?:
+                        (?:
+                            (?:void|boolean|byte|char|short|int|float|long|double)
+                                |
+                            (?:(?:[a-z]\w*\.)*[A-Z]+\w*) # object type
+                        )
+                        [\[\]]*
+                        (?:<.*>)?
+                    ) 
+                    
+                )
+                \s+
+                [^=]+\(
+			))]))
+        (end
+            (regex [}|(?=(^\s*)?[^{])]))
+        (subzones
+            (include @method-content))))
+
+(collection comment-block
+    (zone comment.block.groovy
+        (start
+            (regex /\*
+                (0 punctuation.definition.comment.groovy)))
+        (end
+            (regex \*/
+                (0 punctuation.definition.comment.groovy)))))
+
+(collection annotations
+    (zone meta.declaration.annotation.groovy
+        (start
+            (regex [(?<!\.)(@[^ (]+)(\()]
+                (1 storage.type.annotation.groovy)
+                (2 punctuation.definition.annotation-arguments.begin.groovy)))
+        (end
+            (regex [(\))]
+                (1 punctuation.definition.annotation-arguments.end.groovy)))
+        (subzones
+            (zone
+                (match
+                    (regex [(\w*)\s*(=)]
+                        (1 constant.other.key.groovy)
+                        (2 keyword.operator.assignment.groovy))))
+            (include @values)
+            (zone punctuation.definition.seperator.groovy
+                (match ,))))
+    (zone storage.type.annotation.groovy
+        (match
+            (regex [(?<!\.)@\S+]))))
+
+(collection object-types-inherited
+    (zone entity.other.inherited-class.groovy
+        (start
+            (regex [\b((?:[a-z]\w*\.)*[A-Z]+\w*[a-z]+\w*)<]))
+        (end
+            (regex [>|[^\w\s,\?<\[\]]]))
+        (subzones
+            (include @object-types-inherited)
+            (zone storage.type.generic.groovy
+                (start <)
+                (end
+                    (regex [>|[^\w\s,\[\]<]])))))
+    (zone entity.other.inherited-class.groovy
+        (match
+            (regex [\b(?:[a-z]\w*(\.))*[A-Z]+\w*[a-z]+\w*\b]
+                (1 keyword.operator.dereference.groovy)))))
+
+(collection constructors
+    (zone
+        (start
+            (regex [(?<=;|^)(?=\s*(?:(?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)\s+)*\w+\()]))
+        (end [}])
+        (subzones
+            (include @method-content))))
+
+(collection language-variables
+    (zone variable.language.groovy
+        (match
+            (list this super)
+            (boundary.both))))
+
+(collection map-keys
+    (zone
+        (match
+            (regex [(\w+)\s*(:)]
+                (1 constant.other.key.groovy)
+                (2 punctuation.definition.seperator.key-value.groovy)))))
+
+(collection keyword-operator
+    (zone keyword.operator.as.groovy
+        (match
+            (list as)
+            (boundary.both)))
+    (zone keyword.operator.in.groovy
+        (match
+            (list in)
+            (boundary.both)))
+    (zone keyword.operator.elvis.groovy
+        (match
+            (regex \?\:)))
+    (zone keyword.operator.spreadmap.groovy
+        (match
+            (regex \*\:)))
+    (zone keyword.operator.range.groovy
+        (match
+            (regex \.\.)))
+    (zone keyword.operator.arrow.groovy
+        (match
+            (regex \->)))
+    (zone keyword.operator.leftshift.groovy
+        (match <<))
+    (zone keyword.operator.navigation.groovy
+        (match
+            (regex [(?<=\S)\.(?=\S)])))
+    (zone keyword.operator.safe-navigation.groovy
+        (match
+            (regex [(?<=\S)\?\.(?=\S)])))
+    (zone meta.evaluation.ternary.groovy
+        (start
+            (regex \?
+                (0 keyword.operator.ternary.groovy)))
+        (end
+            (regex `(?=$|\)|}|])`))
+        (subzones
+            (zone keyword.operator.ternary.expression-seperator.groovy
+                (match :))
+            (include @groovy-code-minus-map-keys)))
+    (zone keyword.operator.match.groovy
+        (match ==~))
+    (zone keyword.operator.find.groovy
+        (match =~))
+    (zone keyword.operator.instanceof.groovy
+        (match
+            (list instanceof)
+            (boundary.both)))
+    (zone keyword.operator.comparison.groovy
+        (match
+            (list === == != <= >= <=> <> < > <<)))
+    (zone keyword.operator.assignment.groovy
+        (match =))
+    (zone keyword.operator.increment-decrement.groovy
+        (match
+            (regex [(\-\-|\+\+)])))
+    (zone keyword.operator.arithmetic.groovy
+        (match
+            (regex [(\-|\+|\*|\/|%)])))
+    (zone keyword.operator.logical.groovy
+        (match
+            (regex [(!|&&|\|\|)]))))
+
+(collection braces
+    (zone
+        (start
+            (regex [\{]))
+        (end
+            (regex [\}]))
+        (subzones
+            (include @groovy-code))))
+
+(collection strings
+    (include @string-quoted-double-multiline)
+    (include @string-quoted-single-multiline)
+    (include @string-quoted-double)
+    (include @string-quoted-single)
+    (include @regexp))
+
+(collection method-call
+    (zone meta.method-call.groovy
+        (start
+            (regex [(\w+)(\()]
+                (1 meta.method.groovy)
+                (2 punctuation.definition.method-parameters.begin.groovy)))
+        (end
+            (regex [\)]
+                (0 punctuation.definition.method-parameters.end.groovy)))
+        (subzones
+            (zone punctuation.definition.seperator.parameter.groovy
+                (match ,))
+            (include @groovy-code))))
+
+(collection keyword
+    (include @keyword-operator)
+    (include @keyword-language))
+
+(collection constants
+    (zone constant.other.groovy
+        (match
+            (regex [\b([A-Z][A-Z0-9_]+)\b])))
+    (zone constant.language.groovy
+        (match
+            (list true false null)
+            (boundary.both))))
+
+(collection string-quoted-single
+    (zone string.quoted.single.groovy
+        (start
+            (regex '
+                (0 punctuation.definition.string.begin.groovy)))
+        (end
+            (regex '
+                (0 punctuation.definition.string.end.groovy)))
+        (subzones
+            (include @string-quoted-single-contents))))
+
+(collection regexp
+    (zone string.regexp.groovy
+        (start
+            (regex [/(?=[^/]+/)]
+                (0 punctuation.definition.string.regexp.begin.groovy)))
+        (end
+            (regex /
+                (0 punctuation.definition.string.regexp.end.groovy)))
+        (subzones
+            (zone constant.character.escape.groovy
+                (match
+                    (regex \\.)))))
+    (zone string.regexp.compiled.groovy
+        (start
+            (regex ~"
+                (0 punctuation.definition.string.regexp.begin.groovy)))
+        (end
+            (regex "
+                (0 punctuation.definition.string.regexp.end.groovy)))
+        (subzones
+            (zone constant.character.escape.groovy
+                (match
+                    (regex \\.))))))
+
+(collection structures
+    (zone meta.structure.groovy
+        (start
+            (regex `\[`
+                (0 punctuation.definition.structure.begin.groovy)))
+        (end
+            (regex `\]`
+                (0 punctuation.definition.structure.end.groovy)))
+        (subzones
+            (include @groovy-code)
+            (zone punctuation.definition.separator.groovy
+                (match ,)))))
+
+(collection closures
+    (zone
+        (start
+            (regex [\{(?=.*->)]))
+        (end
+            (regex [\}]))
+        (subzones
+            (zone
+                (start
+                    (regex [(?!->)]))
+                (end
+                    (regex [(?=->)]))
+                (subzones
+                    (zone meta.closure.parameters.groovy
+                        (start
+                            (regex [(?!->)]))
+                        (end
+                            (regex [(?=->)]))
+                        (subzones
+                            (zone meta.closure.parameter.groovy
+                                (start
+                                    (regex [(?!,|->)]))
+                                (end
+                                    (regex [(?=,|->)]))
+                                (subzones
+                                    (zone meta.parameter.default.groovy
+                                        (start
+                                            (regex =
+                                                (0 keyword.operator.assignment.groovy)))
+                                        (end
+                                            (regex [(?=,|->)]))
+                                        (subzones
+                                            (include @groovy-code)))
+                                    (include @parameters)))))))
+            (zone
+                (start
+                    (regex ->
+                        (0 keyword.operator.groovy)))
+                (end
+                    (regex [(?=\})]))
+                (subzones
+                    (include @groovy-code))))))
+
+(collection variables
+    (zone
+        (subzones
+            (zone meta.definition.variable.groovy
+                (start
+                    (regex [(?x:(?=
+                        (?:
+                            (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier
+                                |
+                            (?:def)
+                                |
+                            (?:void|boolean|byte|char|short|int|float|long|double)
+                                |
+                            (?:(?:[a-z]\w*\.)*[A-Z]+\w*) # object type
+                        )
+                        \s+
+                        [\w\d_<>\[\],\s]+
+                        (?:=|$)
+                        
+        			))]))
+                (end
+                    (regex ;|$))
+                (subzones
+                    (zone
+                        (match
+                            (regex \s)))
+                    (zone
+                        (match
+                            (regex [([A-Z_0-9]+)\s+(?=\=)]
+                                (1 constant.variable.groovy))))
+                    (zone
+                        (match
+                            (regex [(\w[^\s,]*)\s+(?=\=)]
+                                (1 meta.definition.variable.name.groovy))))
+                    (zone
+                        (start
+                            (regex =
+                                (0 keyword.operator.assignment.groovy)))
+                        (end
+                            (regex $))
+                        (subzones
+                            (include @groovy-code)))
+                    (zone
+                        (match
+                            (regex [(\w\S*)(?=\s*($|;))]
+                                (1 meta.definition.variable.name.groovy))))
+                    (include @groovy-code))))))
+
+(collection enum-values
+    (zone
+        (start
+            (regex [(?<=;|^)\s*\b([A-Z0-9_]+)(?=\s*(?:,|;|}|\(|$))]
+                (1 constant.enum.name.groovy)))
+        (end
+            (regex [,|;|(?=})|^(?!\s*\w+\s*(?:,|$))]))
+        (subzones
+            (zone meta.enum.value.groovy
+                (start
+                    (regex [\(]))
+                (end
+                    (regex [\)]))
+                (subzones
+                    (include @values))))))
+
+(collection primitive-arrays
+    (zone storage.type.primitive.array.groovy
+        (match
+            (regex [\b(?:void|boolean|byte|char|short|int|float|long|double)(\[\])*\b]))))
+
+(collection types
+    (zone storage.type.def.groovy
+        (match
+            (list def)
+            (boundary.both)))
+    (include @primitive-types)
+    (include @primitive-arrays)
+    (include @object-types))
+
+(collection string-quoted-double
+    (zone string.quoted.double.groovy
+        (start
+            (regex "
+                (0 punctuation.definition.string.begin.groovy)))
+        (end
+            (regex "
+                (0 punctuation.definition.string.end.groovy)))
+        (subzones
+            (include @string-quoted-double-contents))))

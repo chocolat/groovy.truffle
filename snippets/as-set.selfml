@@ -1,0 +1,8 @@
+(name [as Set])
+
+(trigger
+    (tab as))
+
+(only-in source.groovy)
+
+(snippet [as Set])

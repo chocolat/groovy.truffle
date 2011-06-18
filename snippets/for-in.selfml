@@ -1,0 +1,10 @@
+(name [for(… in …) { … }])
+
+(trigger
+    (tab forin))
+
+(only-in source.groovy)
+
+(snippet [for (%{1="element"} in %{2="collection"}) {
+	%{0}
+}])

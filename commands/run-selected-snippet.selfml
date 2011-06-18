@@ -1,0 +1,21 @@
+(trigger
+    (key [[alt][cmd]R]))
+
+(name [Run Selected Snippet])
+
+(only-in source.groovy)
+
+(input selection nothing)
+
+(output tooltip)
+
+(save nothing)
+
+(script [if [ "$TM_SELECTED_TEXT" == "" ]; then
+   exit_show_tool_tip "select some code to run"
+else
+  "$GROOVY_HOME/bin/groovy" -e "$TM_SELECTED_TEXT"
+  exit_show_html
+fi
+
+])

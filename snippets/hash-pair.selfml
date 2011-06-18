@@ -1,0 +1,8 @@
+(name [key: "value" (Hash Pair)])
+
+(trigger
+    (tab :))
+
+(only-in source.groovy)
+
+(snippet [%{1="key"}: %{2="\"%{3=\"value\"}\""}])

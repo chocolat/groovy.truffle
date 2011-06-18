@@ -1,0 +1,16 @@
+(trigger
+    (key [[ctrl][alt][cmd]H]))
+
+(name [Groovy JDK])
+
+(only-in source.groovy)
+
+(input selection)
+
+(output html)
+
+(save nothing)
+
+(script [echo "<meta http-equiv='Refresh'
+        content='0;URL=http://groovy.codehaus.org/groovy-jdk/'>"
+])

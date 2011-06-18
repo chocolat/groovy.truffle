@@ -1,0 +1,8 @@
+(name print)
+
+(trigger
+    (tab p))
+
+(only-in source.groovy)
+
+(snippet [print %{0}])

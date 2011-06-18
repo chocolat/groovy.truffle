@@ -1,0 +1,10 @@
+(name [eachValue { … }])
+
+(trigger
+    (tab eav))
+
+(only-in source.groovy)
+
+(snippet [eachValue {%{1/(.+)/(?1: )/}%{1="value"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

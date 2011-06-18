@@ -1,0 +1,8 @@
+(name assertTrue)
+
+(trigger
+    (tab ast))
+
+(only-in source.groovy)
+
+(snippet [assertTrue(%{1/(.+)/(?1:")/}%{1="message"}%{1/(.+)/(?1:", )/}%{2="test"})%{0}])

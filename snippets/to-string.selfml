@@ -1,0 +1,8 @@
+(name [to String])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toString()])

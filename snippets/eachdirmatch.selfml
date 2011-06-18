@@ -1,0 +1,10 @@
+(name [eachDirMatch { … }])
+
+(trigger
+    (tab eadm))
+
+(only-in source.groovy)
+
+(snippet [eachDirMatch(%{1="filter"}) {%{2/(.+)/(?1: )/}%{2="dir"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

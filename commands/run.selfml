@@ -1,0 +1,14 @@
+(trigger
+    (key [[cmd]R]))
+
+(name Run)
+
+(only-in source.groovy)
+
+(input document word)
+
+(output html)
+
+(save nothing)
+
+(script groovymate.sh)

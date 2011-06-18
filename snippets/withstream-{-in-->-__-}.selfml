@@ -1,0 +1,10 @@
+(name [withStream { … }])
+
+(trigger
+    (tab with))
+
+(only-in source.groovy)
+
+(snippet [withStream {%{1/(.+)/(?1: )/}%{1="stream"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

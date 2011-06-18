@@ -1,0 +1,34 @@
+(detector
+    (extension groovy)
+    (extension gvy))
+
+(folding
+    (start [(\{\s*$|^\s*// \{\{\{)])
+    (stop [^\s*(\}|// \}\}\}$)]))
+
+(in [source.groovy meta.definition.class meta.definition.variable.name]
+    (symbol-list
+        (transformation [
+		s/.+/  $0/g
+	])))
+
+(in [source.groovy entity.name.type.class]
+    (symbol-list))
+
+(in [source.groovy meta.definition.class meta.definition.method.signature]
+    (symbol-list
+        (transformation [
+		s/.+/  $0/g
+	])))
+
+(in [source.groovy meta.definition.method.signature]
+    (symbol-list
+        (transformation [
+		s/\s*.*\s+(\w+)\s*(\(.*\)).*/    $1$2/g
+	])))
+
+(in [source.groovy meta.definition.variable.name]
+    (symbol-list
+        (transformation [
+		s/.+/$0/g
+	])))

@@ -1,0 +1,10 @@
+(name [upto() { … }])
+
+(trigger
+    (tab ut))
+
+(only-in source.groovy)
+
+(snippet [upto(%{1="0"}) {%{2/(.+)/(?1: )/}%{2="i"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

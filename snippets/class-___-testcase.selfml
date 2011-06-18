@@ -1,0 +1,11 @@
+(name [class … extends GroovyTestCase { … }])
+
+(trigger
+    (tab tc))
+
+(only-in source.groovy)
+
+(snippet [class %{2="%{TM_FILENAME/(.*?)(\\..+)/$1/}"} extends GroovyTestCase {
+
+	%{0}
+}])

@@ -1,0 +1,8 @@
+(name [sleep(secs)])
+
+(trigger
+    (tab sleep))
+
+(only-in source.groovy)
+
+(snippet [sleep(%{1="secs"})])

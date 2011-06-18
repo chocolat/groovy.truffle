@@ -1,0 +1,10 @@
+(name [eachFile { … }])
+
+(trigger
+    (tab eaf))
+
+(only-in source.groovy)
+
+(snippet [eachFile {%{1/(.+)/(?1: )/}%{1="file"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

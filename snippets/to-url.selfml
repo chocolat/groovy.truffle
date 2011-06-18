@@ -1,0 +1,8 @@
+(name [to URL])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toURL()])

@@ -1,0 +1,13 @@
+(name [copy(todir: …) { fileset(dir: …) { include … exclude }])
+
+(trigger
+    (tab copy))
+
+(only-in source.groovy)
+
+(snippet [copy(todir:"%{1="targetDir"}") {
+	fileset(dir:"%{2="sourceDir"}") {
+		include(name:"%{3="includeName"}")
+		exclude(name:"%{4="excludeName"}")
+	}
+}])

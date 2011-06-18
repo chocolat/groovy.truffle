@@ -1,0 +1,10 @@
+(name [withReader { … }])
+
+(trigger
+    (tab with))
+
+(only-in source.groovy)
+
+(snippet [withReader {%{1/(.+)/(?1: )/}%{1="reader"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

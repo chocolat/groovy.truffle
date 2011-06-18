@@ -1,0 +1,8 @@
+(name var)
+
+(trigger
+    (tab v))
+
+(only-in source.groovy)
+
+(snippet [%{1="def"} %{2="var"}%{3=" = %{0=\"null\"}"}])

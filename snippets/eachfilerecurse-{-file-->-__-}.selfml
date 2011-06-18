@@ -1,0 +1,10 @@
+(name [eachFileRecurse { … }])
+
+(trigger
+    (tab eafr))
+
+(only-in source.groovy)
+
+(snippet [eachFileRecurse {%{1/(.+)/(?1: )/}%{1="file"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

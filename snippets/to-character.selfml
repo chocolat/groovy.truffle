@@ -1,0 +1,8 @@
+(name [to Character])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toCharacter()])

@@ -1,0 +1,10 @@
+(name [static main() { … }])
+
+(trigger
+    (tab main))
+
+(only-in source.groovy)
+
+(snippet [static main(args) {
+	%{0}
+}])

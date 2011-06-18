@@ -1,0 +1,10 @@
+(name [Thread.startDaemon { … }])
+
+(trigger
+    (tab thread))
+
+(only-in source.groovy)
+
+(snippet [Thread.startDaemon {
+	%{0}
+}])

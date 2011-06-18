@@ -1,0 +1,8 @@
+(name import)
+
+(trigger
+    (tab im))
+
+(only-in source.groovy)
+
+(snippet [import ])

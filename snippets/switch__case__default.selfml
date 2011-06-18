@@ -1,0 +1,15 @@
+(name [switch … case … default])
+
+(trigger
+    (tab switch))
+
+(only-in source.groovy)
+
+(snippet [switch(%{1="value"}) {
+	case %{3="CASE"}:
+		%{4}
+	break%{0}
+	default:
+		%{2}
+	break
+}])

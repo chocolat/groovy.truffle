@@ -1,0 +1,10 @@
+(name [runAfter() { … }])
+
+(trigger
+    (tab runa))
+
+(only-in source.groovy)
+
+(snippet [runAfter(%{1="delay"}) {
+	%{0}
+}])

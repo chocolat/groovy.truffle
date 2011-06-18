@@ -1,0 +1,10 @@
+(name [downto() { … }])
+
+(trigger
+    (tab dt))
+
+(only-in source.groovy)
+
+(snippet [downto(%{1="0"}) {%{2/(.+)/(?1: )/}%{2="i"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

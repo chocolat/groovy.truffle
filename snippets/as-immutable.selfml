@@ -1,0 +1,8 @@
+(name [asImmutable()])
+
+(trigger
+    (tab .as))
+
+(only-in source.groovy)
+
+(snippet [.asImmutable()])

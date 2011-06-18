@@ -1,0 +1,10 @@
+(name [grep(filter) { … }])
+
+(trigger
+    (tab grep))
+
+(only-in source.groovy)
+
+(snippet [grep(%{1="filter"}) {%{2/(.+)/(?1: )/}%{2="obj"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

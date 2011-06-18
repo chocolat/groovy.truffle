@@ -1,0 +1,43 @@
+(trigger
+    (key [[ctrl][alt]H]))
+
+(name [Documentation For Word (Groovy)])
+
+(only-in source.groovy)
+
+(input nothing)
+
+(output html)
+
+(save nothing)
+
+(script [echo "<!-- gotAPI.com search widget v2 begin -->
+<body onload=\"init();\">
+<DIV>
+<STYLE>
+.gaMenu{border:1px solid #505050;background-color:#FAFAFA;padding:0px 5px 0px 5px;}
+.gaHeaderRow{font:bold 8pt Arial;color:#359155;border-top:1px solid #C0C0C0;width:250px;}
+.gaRegularRow,.gaFooterRow{font:8pt Arial;cursor:pointer;}
+.gaSelectedRow{font:8pt Arial;background-color:#c1e0e6;cursor:pointer;}
+</STYLE>
+<SCRIPT><!--
+gaMod='module_java15noui.js';gaTitle='J2SE v1.5 less UI';updateWhenLoaded=false;
+var gaL=false;function gaInit(){if(gaL)return;gaL=true;var s=document.createElement('script');
+s.type='text/javascript';s.src='http://www.gotapi.com/widgets/compiled/c1_module_groovy.js.jsz';s.defer='defer';s.defered='yes';
+document.getElementById('gaInfo').parentNode.appendChild(s)}function gaSearching(){
+document.getElementById('gaWait').style.display='';updateWhenLoaded=true;
+document.getElementById('gaInfo').style.display='none'}
+//-->
+</SCRIPT>
+<DIV style='font:bold 10pt Arial'>Quick J2SE v1.5 less UI lookup</DIV>
+<INPUT id=gaSearch size=20 onfocus=\"gaInit()\" onkeydown=\"gaSearching()\">
+<DIV id=gaInfo style='font:7pt Arial'>powered by <A href='http://www.gotapi.com' style='padding:0px'>gotAPI.com</A></DIV>
+<DIV id=gaWait style='font:7pt Arial;display:none'>Searching...</DIV>
+</DIV>
+</body>
+<!-- gotAPI.com search widget v2 end -->"
+
+if [ $TM_CURRENT_WORD ] 
+then
+	echo "<script>function init() { document.getElementById('gaSearch').value = '$TM_CURRENT_WORD'; document.getElementById('gaSearch').focus(); gaSearching(); }</script>"
+fi])

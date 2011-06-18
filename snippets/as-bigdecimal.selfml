@@ -1,0 +1,8 @@
+(name [as BigDecimal])
+
+(trigger
+    (tab as))
+
+(only-in source.groovy)
+
+(snippet [as BigDecimal])

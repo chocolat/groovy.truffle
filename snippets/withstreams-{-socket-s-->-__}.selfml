@@ -1,0 +1,10 @@
+(name [withStreams { … }])
+
+(trigger
+    (tab with))
+
+(only-in source.groovy)
+
+(snippet [withStreams {%{1/(.+)/(?1: )/}%{1="socket"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

@@ -1,0 +1,8 @@
+(name [to URI])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toURI()])

@@ -1,0 +1,10 @@
+(name [copy(todir: …) { fileset:dir …) }])
+
+(trigger
+    (tab copy))
+
+(only-in source.groovy)
+
+(snippet [copy(todir:"%{1="targetDir"}") {
+	fileset(dir:"%{2="sourceDir"}")
+}])

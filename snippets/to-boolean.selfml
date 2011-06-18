@@ -1,0 +1,8 @@
+(name [to Boolean])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toBoolean()])

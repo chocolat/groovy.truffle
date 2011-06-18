@@ -1,0 +1,10 @@
+(name [reverseEach { … } ])
+
+(trigger
+    (tab rea))
+
+(only-in source.groovy)
+
+(snippet [reverseEach {%{1/(.+)/(?1: )/}%{1="obj"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

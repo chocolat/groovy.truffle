@@ -1,0 +1,8 @@
+(name package)
+
+(trigger
+    (tab pa))
+
+(only-in source.groovy)
+
+(snippet [package ])

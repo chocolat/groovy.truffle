@@ -1,0 +1,10 @@
+(name [sleep(secs) { … // on interrupt do }])
+
+(trigger
+    (tab sleep))
+
+(only-in source.groovy)
+
+(snippet [sleep(%{1="secs"}) {
+	%{2="// on interrupt do"}
+}])

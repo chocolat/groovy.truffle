@@ -1,0 +1,10 @@
+(name [withWriterAppend(charset) { … }])
+
+(trigger
+    (tab with))
+
+(only-in source.groovy)
+
+(snippet [withWriterAppend(%{1="charset"}) {%{2/(.+)/(?1: )/}%{2="writer"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

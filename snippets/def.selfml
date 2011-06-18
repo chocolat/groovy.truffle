@@ -1,0 +1,8 @@
+(name def)
+
+(trigger
+    (tab d))
+
+(only-in source.groovy)
+
+(snippet [def ])

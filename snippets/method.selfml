@@ -1,0 +1,11 @@
+(name method)
+
+(trigger
+    (tab m))
+
+(only-in source.groovy)
+
+(snippet [%{1="def"}%{1/.+/ /}%{2="method"}(%{3}) {
+	%{0}
+}
+])

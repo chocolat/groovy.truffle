@@ -1,0 +1,8 @@
+(name [mkdir(dir: …)])
+
+(trigger
+    (tab mkdir))
+
+(only-in source.groovy)
+
+(snippet [mkdir(dir:"%{1="dirName"}")])

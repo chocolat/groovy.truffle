@@ -1,0 +1,10 @@
+(name [Continue Block Comment])
+
+(trigger
+    (key [[cancel]]))
+
+(only-in [source.groovy comment.block])
+
+(snippet [%{TM_CURRENT_LINE/(.*\*\/$)|.*?(\/\*(?!.*\*\/)).*|.*/(?1:
+:
+(?2: )* )/}])

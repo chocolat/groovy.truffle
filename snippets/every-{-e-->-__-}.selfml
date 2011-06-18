@@ -1,0 +1,10 @@
+(name [every { … }])
+
+(trigger
+    (tab every))
+
+(only-in source.groovy)
+
+(snippet [every {%{1/(.+)/(?1: )/}%{1="obj"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

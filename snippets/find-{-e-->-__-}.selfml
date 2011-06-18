@@ -1,0 +1,10 @@
+(name [find { … }])
+
+(trigger
+    (tab find))
+
+(only-in source.groovy)
+
+(snippet [find {%{1/(.+)/(?1: )/}%{1="obj"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

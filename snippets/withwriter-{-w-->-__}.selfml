@@ -1,0 +1,10 @@
+(name [withWriter { … }])
+
+(trigger
+    (tab with))
+
+(only-in source.groovy)
+
+(snippet [withWriter {%{1/(.+)/(?1: )/}%{1="writer"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

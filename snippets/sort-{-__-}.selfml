@@ -1,0 +1,10 @@
+(name [sort { … }])
+
+(trigger
+    (tab sort))
+
+(only-in source.groovy)
+
+(snippet [sort { 
+	%{0}
+}])

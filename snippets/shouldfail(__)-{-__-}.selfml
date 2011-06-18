@@ -1,0 +1,10 @@
+(name [shouldFail { … }])
+
+(trigger
+    (tab sf))
+
+(only-in source.groovy)
+
+(snippet [shouldFail%{1/(.+)/(?1:\()/}%{1="Exception"}%{1/(.+)/(?1:\))/} {
+	%{0}
+}])

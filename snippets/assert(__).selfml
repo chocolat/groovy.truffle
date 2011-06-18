@@ -1,0 +1,8 @@
+(name assert)
+
+(trigger
+    (tab !))
+
+(only-in source.groovy)
+
+(snippet [assert %{1="test"}%{2/(.+)/(?1: \: ")/}%{2="Failure message"}%{2/(.+)/(?1:")/}%{0}])

@@ -1,0 +1,10 @@
+(name [splitEachLine(separator) { … }])
+
+(trigger
+    (tab sel))
+
+(only-in source.groovy)
+
+(snippet [splitEachLine(%{1="separator"}) {%{2/(.+)/(?1: )/}%{2="obj"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

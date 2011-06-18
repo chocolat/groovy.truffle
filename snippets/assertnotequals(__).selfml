@@ -1,0 +1,8 @@
+(name assertNotEquals)
+
+(trigger
+    (tab asne))
+
+(only-in source.groovy)
+
+(snippet [assertNotEquals(%{1/(.+)/(?1:")/}%{1="message"}%{1/(.+)/(?1:", )/}%{2="unexpected"}, %{3="actual"})%{0}])

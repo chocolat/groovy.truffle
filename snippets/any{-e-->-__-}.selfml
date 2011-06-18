@@ -1,0 +1,10 @@
+(name [any { … }])
+
+(trigger
+    (tab any))
+
+(only-in source.groovy)
+
+(snippet [any {%{1/(.+)/(?1: )/}%{1="obj"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

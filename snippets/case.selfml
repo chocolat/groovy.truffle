@@ -1,0 +1,10 @@
+(name [case … break])
+
+(trigger
+    (tab case))
+
+(only-in source.groovy)
+
+(snippet [case %{1="CASE_NAME"}:
+	%{2}
+break%{0}])

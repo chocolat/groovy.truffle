@@ -1,0 +1,10 @@
+(name [eachKey { … }])
+
+(trigger
+    (tab eak))
+
+(only-in source.groovy)
+
+(snippet [eachKey {%{1/(.+)/(?1: )/}%{1="key"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

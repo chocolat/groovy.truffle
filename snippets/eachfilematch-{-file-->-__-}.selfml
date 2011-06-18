@@ -1,0 +1,10 @@
+(name [eachFileMatch { … } ])
+
+(trigger
+    (tab eafm))
+
+(only-in source.groovy)
+
+(snippet [eachFileMatch(%{1="filter"}) {%{2/(.+)/(?1: )/}%{2="file"}%{2/(.+)/(?1: ->)/}
+	%{0}
+}])

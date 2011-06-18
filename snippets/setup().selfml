@@ -1,0 +1,10 @@
+(name [setUp() { … }])
+
+(trigger
+    (tab setup))
+
+(only-in source.groovy)
+
+(snippet [void setUp() {
+	%{0}
+}])

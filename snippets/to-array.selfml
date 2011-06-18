@@ -1,0 +1,8 @@
+(name [to Array])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toArray()])

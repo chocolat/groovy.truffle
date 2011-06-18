@@ -1,0 +1,11 @@
+(name [closure = { … } ])
+
+(trigger
+    (key [[ctrl][alt][enter]])
+    (tab cv))
+
+(only-in source.groovy)
+
+(snippet [def %{1="closureName"} = { %{2="args"} ->
+	%{0}
+}])

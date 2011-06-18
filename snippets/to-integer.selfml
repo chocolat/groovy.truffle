@@ -1,0 +1,8 @@
+(name [to Integer])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toInteger()])

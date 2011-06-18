@@ -1,0 +1,8 @@
+(name [to BigInteger])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toBigInteger()])

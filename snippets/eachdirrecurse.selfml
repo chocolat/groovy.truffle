@@ -1,0 +1,10 @@
+(name [eachDirRecurse { … }])
+
+(trigger
+    (tab eadr))
+
+(only-in source.groovy)
+
+(snippet [eachDirRecurse {%{1/(.+)/(?1: )/}%{1="dir"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

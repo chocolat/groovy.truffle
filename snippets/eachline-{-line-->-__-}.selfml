@@ -1,0 +1,10 @@
+(name [eachLine { … }])
+
+(trigger
+    (tab eal))
+
+(only-in source.groovy)
+
+(snippet [eachLine {%{1/(.+)/(?1: )/}%{1="line"}%{1/(.+)/(?1: ->)/}
+	%{0}
+}])

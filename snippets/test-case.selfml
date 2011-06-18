@@ -1,0 +1,10 @@
+(name [test()])
+
+(trigger
+    (tab t))
+
+(only-in source.groovy)
+
+(snippet [void test%{1}() {
+	%{0}
+}])

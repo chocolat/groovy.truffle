@@ -1,0 +1,8 @@
+(name assertNotNull)
+
+(trigger
+    (tab asnn))
+
+(only-in source.groovy)
+
+(snippet [assertNotNull(%{1/(.+)/(?1:")/}%{1="message"}%{1/(.+)/(?1:", )/}%{2="instance"})%{0}])

@@ -1,0 +1,8 @@
+(name [to Float])
+
+(trigger
+    (tab to))
+
+(only-in source.groovy)
+
+(snippet [toFloat()])

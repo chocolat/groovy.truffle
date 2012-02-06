@@ -9,19 +9,46 @@
                 (3 punctuation.terminator.groovy)
                 (1 keyword.other.package.groovy)
                 (2 storage.modifier.package.groovy))))
-    (zone meta.import.static.groovy
-        (match
-            (regex [^\s*(import)(?:\s+(static)\s+)\b(?:\s*([^ ;$]+)\s*(;)?)?]
-                (3 storage.modifier.import.groovy)
-                (4 punctuation.terminator.groovy)
-                (1 keyword.other.import.groovy)
-                (2 keyword.other.import.static.groovy))))
     (zone meta.import.groovy
-        (match
-            (regex [^\s*(import)\b(?:\s*([^ ;$]+)\s*(;)?)?]
+        (start
+            (regex [(import static)\b\s*]
+                (1 keyword.other.import.static.groovy)
                 (3 punctuation.terminator.groovy)
                 (1 keyword.other.import.groovy)
-                (2 storage.modifier.import.groovy))))
+                (2 storage.modifier.import.groovy)))
+        (end
+            (regex [\s*(?:$|(;))]
+                (1 punctuation.terminator.groovy)
+                (3 punctuation.terminator.groovy)
+                (1 keyword.other.import.groovy)
+                (2 storage.modifier.import.groovy)))
+        (subzones
+            (zone punctuation.separator.groovy
+                (match
+                    (regex \.)))
+            (zone invalid.illegal.character_not_allowed_here.groovy
+                (match
+                    (regex \s)))))
+    (zone meta.import.groovy
+        (start
+            (regex [(import)\b\s*]
+                (1 keyword.other.import.groovy)
+                (3 punctuation.terminator.groovy)
+                (1 keyword.other.import.groovy)
+                (2 storage.modifier.import.groovy)))
+        (end
+            (regex [\s*(?:$|(;))]
+                (1 punctuation.terminator.groovy)
+                (3 punctuation.terminator.groovy)
+                (1 keyword.other.import.groovy)
+                (2 storage.modifier.import.groovy)))
+        (subzones
+            (zone punctuation.separator.groovy
+                (match
+                    (regex \.)))
+            (zone invalid.illegal.character_not_allowed_here.groovy
+                (match
+                    (regex \s)))))
     (zone meta.import.groovy
         (match
             (regex [^\s*(import)(?:\s+(static)\s+)\b(?:\s*([^ ;$]+)\s*(;)?)?]
@@ -84,16 +111,14 @@
                 (end
                     (regex [(?=})]))
                 (subzones
-                    (include @enum-values)
-                    (include @constructors)
-                    (include @groovy))))))
+                    (include @class-body))))))
 
 (collection groovy
     (include @comments)
-    (include @annotations)
     (include @class)
     (include @variables)
     (include @methods)
+    (include @annotations)
     (include @groovy-code))
 
 (collection values
@@ -115,6 +140,55 @@
                 (0 punctuation.section.scope.groovy)))
         (subzones
             (include @nest_curly))))
+
+(collection anonymous-classes-and-new
+    (zone
+        (start
+            (regex \bnew\b
+                (0 keyword.control.new.groovy)))
+        (end
+            (regex `(?<=\)|\])(?!\s*{)|(?<=})|(?=[;])|$`))
+        (subzones
+            (zone
+                (start
+                    (regex `(\w+)\s*(?=\[)`
+                        (1 storage.type.groovy)))
+                (end
+                    (regex [}|(?=\s*(?:,|;|\)))|$]))
+                (subzones
+                    (zone
+                        (start
+                            (regex `\[`))
+                        (end
+                            (regex `\]`))
+                        (subzones
+                            (include @groovy)))
+                    (zone
+                        (start [{])
+                        (end
+                            (regex [(?=})]))
+                        (subzones
+                            (include @groovy)))))
+            (zone
+                (start
+                    (regex [(?=\w.*\(?)]))
+                (end
+                    (regex [(?<=\))|$]))
+                (subzones
+                    (include @object-types)
+                    (zone
+                        (start
+                            (regex [\(]
+                                (1 storage.type.groovy)))
+                        (end
+                            (regex [\)]))
+                        (subzones
+                            (include @groovy)))))
+            (zone meta.inner-class.groovy
+                (start [{])
+                (end [}])
+                (subzones
+                    (include @class-body))))))
 
 (collection string-quoted-single-contents
     (zone constant.character.escape.groovy
@@ -163,7 +237,7 @@
 (collection object-types
     (zone storage.type.generic.groovy
         (start
-            (regex [\b((?:[a-z]\w*\.)*[A-Z]+\w*[a-z]+\w*)<]))
+            (regex [\b((?:[a-z]\w*\.)*(?:[A-Z]+\w*[a-z]+\w*|UR[LI]))<]))
         (end
             (regex [>|[^\w\s,\?<\[\]]]))
         (subzones
@@ -187,7 +261,7 @@
                     (include @groovy)))))
     (zone storage.type.groovy
         (match
-            (regex [\b(?:[a-z]\w*\.)*[A-Z]+\w*[a-z]+\w*\b]))))
+            (regex [\b(?:[a-zA-Z]\w*\.)*(?:[A-Z]+\w*[a-z]+\w*|UR[LI])\b]))))
 
 (collection storage-modifiers
     (zone storage.modifier.access-control.groovy
@@ -266,16 +340,12 @@
                 (0 punctuation.definition.case-terminator.groovy)))
         (subzones
             (include @groovy-code-minus-map-keys)))
-    (zone keyword.other.new.groovy
-        (match
-            (list new)
-            (boundary.both)))
     (zone meta.declaration.assertion.groovy
         (start
             (regex [\b(assert)\s]
                 (1 keyword.control.assert.groovy)))
         (end
-            (regex $))
+            (regex [$|;|}]))
         (subzones
             (zone keyword.operator.assert.expression-seperator.groovy
                 (match :))
@@ -293,6 +363,7 @@
             (include @support-functions)
             (include @keyword-language)
             (include @values)
+            (include @anonymous-classes-and-new)
             (include @keyword-operator)
             (include @types)
             (include @storage-modifiers)
@@ -309,10 +380,18 @@
     (zone
         (match
             (regex \s)))
-    (include @storage-modifiers)
+    (include @annotations)
+    (zone meta.method.return-type.java
+        (start
+            (regex [(?=(?:\w|<)[^\(]*\s+(?:[\w$]|<)+\s*\()]))
+        (end
+            (regex [(?=[\w$]+\s*\()]))
+        (subzones
+            (include @storage-modifiers)
+            (include @types)))
     (zone meta.definition.method.signature.java
         (start
-            (regex [(\w+)\s*\(]
+            (regex [([\w$]+)\s*\(]
                 (1 entity.name.function.java)))
         (end
             (regex [\)]))
@@ -353,13 +432,6 @@
                     (include @types)
                     (zone punctuation.definition.seperator.groovy
                         (match ,))))))
-    (zone meta.method.return-type.java
-        (start
-            (regex [(?=(?:\w|<).*\s+(?:\w|<)+\s*\()]))
-        (end
-            (regex [(?=\w+\s*\()]))
-        (subzones
-            (include @types)))
     (zone meta.throwables.groovy
         (start
             (regex throws
@@ -378,7 +450,7 @@
 (collection methods
     (zone meta.definition.method.groovy
         (start
-            (regex [(?x:(?<=;|^)(?=\s*
+            (regex [(?x:(?<=;|^|{)(?=\s*
                 (?:
                     (?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final) # visibility/modifier
                         |
@@ -388,7 +460,7 @@
                         (?:
                             (?:void|boolean|byte|char|short|int|float|long|double)
                                 |
-                            (?:(?:[a-z]\w*\.)*[A-Z]+\w*) # object type
+                            (?:@?(?:[a-zA-Z]\w*\.)*[A-Z]+\w*) # object type
                         )
                         [\[\]]*
                         (?:<.*>)?
@@ -396,10 +468,10 @@
                     
                 )
                 \s+
-                [^=]+\(
+                ([^=]+\s+)?\w+\s*\(
 			))]))
         (end
-            (regex [}|(?=(^\s*)?[^{])]))
+            (regex [}|(?=[^{])]))
         (subzones
             (include @method-content))))
 
@@ -437,7 +509,7 @@
 (collection object-types-inherited
     (zone entity.other.inherited-class.groovy
         (start
-            (regex [\b((?:[a-z]\w*\.)*[A-Z]+\w*[a-z]+\w*)<]))
+            (regex [\b((?:[a-zA-Z]\w*\.)*[A-Z]+\w*[a-z]+\w*)<]))
         (end
             (regex [>|[^\w\s,\?<\[\]]]))
         (subzones
@@ -448,13 +520,13 @@
                     (regex [>|[^\w\s,\[\]<]])))))
     (zone entity.other.inherited-class.groovy
         (match
-            (regex [\b(?:[a-z]\w*(\.))*[A-Z]+\w*[a-z]+\w*\b]
+            (regex [\b(?:[a-zA-Z]\w*(\.))*[A-Z]+\w*[a-z]+\w*\b]
                 (1 keyword.operator.dereference.groovy)))))
 
 (collection constructors
     (zone
         (start
-            (regex [(?<=;|^)(?=\s*(?:(?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)\s+)*\w+\()]))
+            (regex [(?<=;|^)(?=\s*(?:(?:private|protected|public|native|synchronized|abstract|threadsafe|transient|static|final)\s+)*[A-Z]\w*\()]))
         (end [}])
         (subzones
             (include @method-content))))
@@ -553,7 +625,7 @@
 (collection method-call
     (zone meta.method-call.groovy
         (start
-            (regex [(\w+)(\()]
+            (regex [([\w$]+)(\()]
                 (1 meta.method.groovy)
                 (2 punctuation.definition.method-parameters.begin.groovy)))
         (end
@@ -576,6 +648,11 @@
         (match
             (list true false null)
             (boundary.both))))
+
+(collection class-body
+    (include @enum-values)
+    (include @constructors)
+    (include @groovy))
 
 (collection string-quoted-single
     (zone string.quoted.single.groovy
@@ -628,15 +705,16 @@
 (collection closures
     (zone
         (start
-            (regex [\{(?=.*->)]))
+            (regex [\{(?=.*?->)]))
         (end
             (regex [\}]))
         (subzones
             (zone
                 (start
-                    (regex [(?!->)]))
+                    (regex [(?<=\{)(?=[^\}]*?->)]))
                 (end
-                    (regex [(?=->)]))
+                    (regex ->
+                        (0 keyword.operator.groovy)))
                 (subzones
                     (zone meta.closure.parameters.groovy
                         (start
@@ -661,8 +739,7 @@
                                     (include @parameters)))))))
             (zone
                 (start
-                    (regex ->
-                        (0 keyword.operator.groovy)))
+                    (regex [(?=[^}])]))
                 (end
                     (regex [(?=\})]))
                 (subzones
@@ -712,7 +789,7 @@
                             (include @groovy-code)))
                     (zone
                         (match
-                            (regex [(\w\S*)(?=\s*($|;))]
+                            (regex [(\w[^\s=]*)(?=\s*($|;))]
                                 (1 meta.definition.variable.name.groovy))))
                     (include @groovy-code))))))
 
@@ -730,7 +807,9 @@
                 (end
                     (regex [\)]))
                 (subzones
-                    (include @values))))))
+                    (zone punctuation.definition.seperator.parameter.groovy
+                        (match ,))
+                    (include @groovy-code))))))
 
 (collection primitive-arrays
     (zone storage.type.primitive.array.groovy

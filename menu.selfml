@@ -11,14 +11,9 @@
     (submenu Declarations
         [snippet.#!-usr-local-bin-groovy--w]
         ---
-        snippet.import
-        snippet.package
-        ---
-        snippet.class-__
         snippet.constructor
         snippet.class-__-singleton
         ---
-        [snippet.assert(__)]
         (submenu Variables snippet.var --- [snippet.def-__-closure-=-{__}])
         (submenu Methods snippet.static-main-method)
         (submenu Testing
